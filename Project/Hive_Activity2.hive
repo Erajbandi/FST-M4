@@ -1,0 +1,11 @@
+CREATE TABLE ACTIVITY2 (line STRING);
+LOAD DATA LOCAL INPATH 'episodeIV_dialouges.txt' INTO TABLE ACTIVITY2;
+
+
+CREATE TABLE DLG_WITH_LUKE AS
+SELECT 'LUKE' as name, count(1) AS count FROM
+(SELECT split(line, '\t')[1] AS speech FROM prjFiles) s
+WHERE s.speech LIKE '%Luke%' ;
+
+
+select * from DLG_WITH_LUKE;
