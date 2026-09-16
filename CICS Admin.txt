@@ -1,0 +1,38 @@
+For MAPSET:
+1. Compile BMS mapset using MAPCOMP jcl
+2. Define mapset in cics region
+ a. define mapset
+    CEDA DEF MAPSET(MDNMPS2) GROUP(MATEDN)
+ b. install mapset
+    CEDA INST MAPSET(MDNMPS2) GROUP(MATEDN)
+3. Test map to see layout
+  CECI SEND MAP(TESTMAP) MAPSET(MDNMPS2)
+4. In case of recompilation of bms mapset, refresh the mapset loadmodule in cics region with
+  CEMT SET PROG(MDNMPS2) NEWC
+For COBOL program:
+1. Compile cics cobol source program with CICSC jcl
+3. Define program in cics region
+ a. define program
+    CEDA DEF PROG(MDNPGM2) LANG(COBOL) GROUP(MATEDN)
+ b. install program
+    CEDA INST PROG(MDNPGM2) GROUP(MATEDN)
+4. Define Transaction in cics region
+ a. define transaction
+    CEDA DEF TRANS(MDN2) PROG(MDNPGM2) GROUP(MATEDN)
+ b. install transaction
+    CEDA INST TRANS(MDN2) GROUP(MATEDN)
+5. In case of recompilation of program, refresh the loadmodule in cics region with
+  CEMT SET PROG(MDNPGM2) NEWC
+6. Cobol + DB2 program, compile using COBDBPC jcl
+ a. define db2entry
+    CEDA DEF DB2ENTRY(MDNENT2) PLAN(MATEDNB) GROUP(MATEDN)
+ b. install db2entry
+    CEDA INST DB2ENTRY(MDNENT2) GROUP(MATEDN)
+ c. define db2tran
+    CEDA DEF DB2TRAN(MDNTRN2) ENTRY(MDNENT2) TRAN(MDN2) GROUP(MATEDN)
+ d. install db2tran
+    CEDA INST DB2TRAN(MDNTRN2) GROUP(MATEDN)
+ Note: Instead of having pairs of DB2ENTRY and DB2TRAN, you can provide transaction name in DB2ENTRY itself, like:
+       CEDA DEF DB2ENTRY(MDNENT2) PLAN(MATEDNB) TRAN(MDN2) GROUP(MATEDN)
+ In case of recompile of program, refresh the load module in cics region with
+  CEMT SET PROG(MDNPGM2) NEWC
